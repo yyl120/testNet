@@ -1,0 +1,6 @@
+Element e = tempVar instanceof Element ? (Element) tempVar : null;
+ref 引用传递
+
+if (Root.getCheckValids().stream().filter(p -> p.getCheckType() == y2.getFBsfDictionary()) == null) {
+ stream：从集合中获取符合条件的元素  =   C#   SingleOrDefault
+  List<KttranBusiness> optional=kb.stream().filter(p -> p.getBsParentCode()==bscode).collect(Collectors.toList());//多条数据

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.testmybatis.insert.dao.UserInfoDao">
+    <update id="saveTable" parameterType="String">
+     merge into LPJ_TABLE_UPDATE_TEST t1 using dual  on ((select count(*) from LPJ_TABLE_UPDATE_TEST where id = #{ID}) > 0)
+ when matched then
+      update set t1.name = #{NAME},t1.bir=#{BIR} where t1.id=#{ID}
+ when not matched then
+   INSERT (ID,NAME,BIR) VALUES (#{ID},#{NAME},#{BIR})
+
+    </update>
+
+
+
+    <select id="selectTable" resultMap="business" >
+       select id,name from LPJ_TABLE_UPDATE_TEST where id=#{ID}
+        <if test="NAME != null and NAME!=''">
+            AND name=#{NAME}
+        </if>
+ </select>
+    <resultMap id="business" type="com.example.testmybatis.insert.domain.Test">
+        <id column="id" property="id" ></id>
+        <result column="name" property="name"></result>
+        <result column="bir" property="bir"></result>
+    </resultMap>
+
+    <select id="findFieldByTableName" parameterType="java.lang.String" resultType="java.lang.String">
+       select column_name
+       from user_tab_cols
+       where table_name= #{TableName}
+ </select>
+    <select id="selectPK" parameterType="java.lang.String" resultType="java.lang.String">
+       select bsf_name
+       from KTTRAN_BUSSINESS_FIELD
+       where bs_code= #{BS_CODE} and BSF_PK='Y'
+ </select>
+    <insert id="insertFieldByTableName" parameterType="java.lang.String" >
+       insert into #{TableNames} values (#{id},#{name},#{bir})
+ </insert>
+    <update id="updateFieldByTableName" parameterType="java.lang.String" >
+       update  #{TableNames} set name=#{name} where id=#{id}
+ </update>
+
+
+  <insert id="insert" parameterType="com.example.testmybatis.insert.domain.UserInfo"  >
+      <selectKey keyProperty="UR_ID" order="BEFORE" resultType="String">
+          select userinfo.nextval from dual
+      </selectKey>
+        insert into KTTRAN_USERINFO(UR_ID,UR_CODE,UR_PASSWORD)
+         values
+        (#{UR_ID},#{UR_CODE},#{UR_PASSWORD})
+    </insert>
+    <select id="selectUserinfo" resultMap="userinfo">
+              select * from KTTRAN_USERINFO
+     </select>
+    <resultMap id="userinfo" type="com.example.testmybatis.insert.domain.KttranUserinfo">
+        <id column="UR_ID" property="fUrId" ></id>
+        <result column="ORG_CODE" property="fOrgCode"></result>
+        <result column="UR_CODE" property="fUrCode"></result>
+        <result column="UR_PASSWORD" property="fUrPassword"></result>
+        <result column="UR_NAME" property="fUrName"></result>
+        <result column="UR_INTIME" property="fUrIntime"></result>
+        <result column="USE_STATUS" property="fUseStatus"></result>
+        <result column="UR_MEMO" property="fUrMemo"></result>
+        <result column="UR_MAC" property="fUrMac"></result>
+        <result column="UR_USESTATUS" property="UR_USESTATUS"></result>
+        <result column="UR_PARENT" property="UR_PARENT"></result>
+        <result column="UR_PERSON" property="UR_PERSON"></result>
+        <result column="UR_PHONE" property="UR_PHONE"></result>
+        <result column="UR_URLS" property="UR_URLS"></result>
+        <result column="UR_ID2" property="UR_ID2"></result>
+        <result column="ISTEST" property="ISTEST"></result>
+        <result column="IS_LOG" property="IS_LOG"></result>
+
+
+    </resultMap></mapper>

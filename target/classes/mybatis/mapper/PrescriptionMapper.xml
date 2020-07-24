@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.testmybatis.insert.dao.PrescriptionDao">
+    <select id="limitORG_CODE" parameterType="String" resultType="String">
+		select 1 from dual where #{ORG_CODE} in (SELECT ORG_CODE FROM KTSYS_ORGANIZATION)
+	</select>
+	<select id="limitEMP_ID" parameterType="String" resultType="String">
+		select 1 from dual where #{EMP_ID} in (SELECT EMP_ID FROM KTDIC_EMPLOYEE WHERE EMP_ID=#{EMP_ID} AND ORG_CODE=#{ORG_CODE})
+	</select>
+
+
+
+	<delete id="deletektdocPrescription" parameterType="String">
+		 delete from KTDOC_PRESCRIPTION  where ORG_CODE = #{ORG_CODE} and PRES_ID  = #{PRES_ID}
+	</delete>
+
+	<delete id="deletektdocPrescriptionList" parameterType="String">
+		 delete from KTDOC_PRESCRIPTION_LIST   where ORG_CODE = #{ORG_CODE} and PRES_ID =#{PRES_ID}
+	</delete>
+    <update id="updateOrInsertdocPrescription" parameterType="String">
+     merge into KTDOC_PRESCRIPTION  k  using dual  on
+((select count(*) from KTDOC_PRESCRIPTION where ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR} and PRES_ID=#{PRES_ID,jdbcType=VARCHAR} ) > 0)
+ when matched then
+      update set
+            k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR},
+      		k.PRES_ID=#{PRES_ID,jdbcType=VARCHAR},
+      		k.CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR},
+      		k.RECORD_TIME=to_date(#{RECORD_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.TYPE=#{TYPE,jdbcType=VARCHAR},
+      		k.EMP_ID=#{EMP_ID,jdbcType=VARCHAR},
+      		k.CATEGORY=#{CATEGORY,jdbcType=VARCHAR}
+      		where k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR} and k.PRES_ID=#{PRES_ID,jdbcType=VARCHAR}
+    when not matched then
+   INSERT(
+        ORG_CODE,
+		PRES_ID,
+        CLINIC_ID,
+        RECORD_TIME,
+        TYPE,
+        EMP_ID,
+        CATEGORY)
+		VALUES
+		(#{ORG_CODE,jdbcType=VARCHAR},
+		#{PRES_ID,jdbcType=VARCHAR},
+		#{CLINIC_ID,jdbcType=VARCHAR},
+        to_date(#{RECORD_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+        #{TYPE,jdbcType=VARCHAR},
+		#{EMP_ID,jdbcType=VARCHAR},
+		#{CATEGORY,jdbcType=VARCHAR}
+		)
+    </update>
+
+	<insert id="updateOrInsertPrescriptionList" parameterType="List">
+		merge into KTDOC_PRESCRIPTION_LIST k
+		using(
+		<foreach collection="list" item="item"  separator="union" index="index">
+			select
+			#{item.ORG_CODE,jdbcType=VARCHAR} ORG_CODE,
+			#{item.PRES_ID,jdbcType=VARCHAR} PRES_ID,
+			#{item.NO,jdbcType=VARCHAR} NO,
+			#{item.GROUPNO,jdbcType=VARCHAR} GROUPNO,
+			#{item.MEDIC_CLASS,jdbcType=VARCHAR} MEDIC_CLASS,
+			#{item.EMP_ID,jdbcType=VARCHAR} EMP_ID,
+			#{item.MEDIC_CODE,jdbcType=VARCHAR} MEDIC_CODE,
+			#{item.MEDIC_CODE_SAFETY,jdbcType=VARCHAR} MEDIC_CODE_SAFETY,
+			#{item.MEDIC_CODE_LOCAL,jdbcType=VARCHAR} MEDIC_CODE_LOCAL,
+			#{item.MEDIC_NAME,jdbcType=VARCHAR} MEDIC_NAME,
+			#{item.MEDIC_TYPE,jdbcType=VARCHAR} MEDIC_TYPE,
+			#{item.MEDIC_SPEC,jdbcType=VARCHAR} MEDIC_SPEC,
+			#{item.MEDIC_AREA,jdbcType=VARCHAR} MEDIC_AREA,
+			#{item.MEDIC_USEQUANTITY,jdbcType=VARCHAR} MEDIC_USEQUANTITY,
+			#{item.MEDIC_USEUNIT,jdbcType=VARCHAR} MEDIC_USEUNIT,
+			#{item.MEDIC_USEDOSAGE,jdbcType=VARCHAR} MEDIC_USEDOSAGE,
+			#{item.MEDIC_USECODE,jdbcType=VARCHAR} MEDIC_USECODE,
+			#{item.MEDIC_USEPLAN,jdbcType=VARCHAR} MEDIC_USEPLAN,
+			#{item.MEDIC_USEMODE,jdbcType=VARCHAR} MEDIC_USEMODE,
+			#{item.MEDIC_DAYS,jdbcType=VARCHAR} MEDIC_DAYS,
+			#{item.MEDIC_QUANTITY,jdbcType=VARCHAR} MEDIC_QUANTITY,
+			#{item.MEDIC_UNIT,jdbcType=VARCHAR} MEDIC_UNIT,
+			#{item.MEDIC_REMARK,jdbcType=VARCHAR} MEDIC_REMARK,
+			#{item.MEDIC_SELF,jdbcType=VARCHAR} MEDIC_SELF,
+			#{item.MEDIC_SAFETY,jdbcType=VARCHAR} MEDIC_SAFETY,
+			#{item.MEDIC_SAFETYCLASS,jdbcType=VARCHAR} MEDIC_SAFETYCLASS,
+			to_date(#{item.CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss') CREATE_TIME,
+			to_date(#{item.MODIFY_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss')  MODIFY_TIME,
+			#{item.DETAIL_DOSE_FLAG,jdbcType=VARCHAR} DETAIL_DOSE_FLAG,
+			#{item.DISPENSARY_ID,jdbcType=VARCHAR} DISPENSARY_ID,
+			#{item.DOSAGE,jdbcType=VARCHAR} DOSAGE,
+			#{item.DOSE,jdbcType=VARCHAR} DOSE,
+			#{item.DRUG_ID,jdbcType=VARCHAR} DRUG_ID,
+			#{item.DRUG_WAY,jdbcType=VARCHAR} DRUG_WAY,
+			#{item.MED_INS_MARK,jdbcType=VARCHAR} MED_INS_MARK,
+			#{item.QUANTITY,jdbcType=VARCHAR} QUANTITY,
+			#{item.REMARK,jdbcType=VARCHAR} REMARK,
+			#{item.SELF_MARK,jdbcType=VARCHAR} SELF_MARK,
+			#{item.SKIN_TEST,jdbcType=VARCHAR} SKIN_TEST,
+			#{item.TIMES,jdbcType=VARCHAR} TIMES,
+			#{item.USAGE,jdbcType=VARCHAR} USAGE,
+			#{item.WARN_TAG,jdbcType=VARCHAR} WARN_TAG
+			from dual
+		</foreach>) t2
+		on (k.ORG_CODE = t2.ORG_CODE and k.PRES_ID = t2.PRES_ID and k.NO = t2.NO and k.GROUPNO = t2.GROUPNO)
+		when matched then
+		 UPDATE SET k.MEDIC_TYPE = t2.MEDIC_TYPE
+		when not matched then
+		INSERT (
+		ORG_CODE,
+		PRES_ID,
+		NO,
+		GROUPNO,
+		MEDIC_CLASS,
+		EMP_ID,
+		MEDIC_CODE,
+		MEDIC_CODE_SAFETY,
+		MEDIC_CODE_LOCAL,
+		MEDIC_NAME,
+		MEDIC_TYPE,
+		MEDIC_SPEC,
+		MEDIC_AREA,
+		MEDIC_USEQUANTITY,
+		MEDIC_USEUNIT,
+		MEDIC_USEDOSAGE,
+		MEDIC_USECODE,
+		MEDIC_USEPLAN,
+		MEDIC_USEMODE,
+		MEDIC_DAYS,
+		MEDIC_QUANTITY,
+		MEDIC_UNIT,
+		MEDIC_REMARK,
+		MEDIC_SELF,
+		MEDIC_SAFETY,
+		MEDIC_SAFETYCLASS,
+		CREATE_TIME,
+		MODIFY_TIME,
+		DETAIL_DOSE_FLAG,
+		DISPENSARY_ID,
+		DOSAGE,
+		DOSE,
+		DRUG_ID,
+		DRUG_WAY,
+		MED_INS_MARK,
+		QUANTITY,
+		REMARK,
+		SELF_MARK,
+		SKIN_TEST,
+		TIMES,
+		USAGE,
+		WARN_TAG
+		)
+		VALUES(
+		t2.ORG_CODE,
+		t2.PRES_ID,
+		t2.NO,
+		t2.GROUPNO,
+		t2.MEDIC_CLASS,
+		t2.EMP_ID,
+		t2.MEDIC_CODE,
+		t2.MEDIC_CODE_SAFETY,
+		t2.MEDIC_CODE_LOCAL,
+		t2.MEDIC_NAME,
+		t2.MEDIC_TYPE,
+		t2.MEDIC_SPEC,
+		t2.MEDIC_AREA,
+		t2.MEDIC_USEQUANTITY,
+		t2.MEDIC_USEUNIT,
+		t2.MEDIC_USEDOSAGE,
+		t2.MEDIC_USECODE,
+		t2.MEDIC_USEPLAN,
+		t2.MEDIC_USEMODE,
+		t2.MEDIC_DAYS,
+		t2.MEDIC_QUANTITY,
+		t2.MEDIC_UNIT,
+		t2.MEDIC_REMARK,
+		t2.MEDIC_SELF,
+		t2.MEDIC_SAFETY,
+		t2.MEDIC_SAFETYCLASS,
+		t2.CREATE_TIME,
+		t2.MODIFY_TIME,
+		t2.DETAIL_DOSE_FLAG,
+		t2.DISPENSARY_ID,
+		t2.DOSAGE,
+		t2.DOSE,
+		t2.DRUG_ID,
+		t2.DRUG_WAY,
+		t2.MED_INS_MARK,
+		t2.QUANTITY,
+		t2.REMARK,
+		t2.SELF_MARK,
+		t2.SKIN_TEST,
+		t2.TIMES,
+		t2.USAGE,
+		t2.WARN_TAG
+		)
+	</insert>
+
+	<select id="limitDEPT_CODE" parameterType="String" resultType="String">
+		select 1 from dual where #{DEPT_CODE} in (SELECT DEPT_CODE FROM KTDIC_DEPT)
+	</select>
+	<select id="limitDT_CODE " parameterType="String" resultType="String">
+		select 1 from dual where #{DT_CODE } in (SELECT DT_CODE  FROM KTDIC_EMPLOYEE WHERE EMP_ID=#{EMP_ID} AND ORG_CODE=#{ORG_CODE})
+	</select>
+	<update id="updateOrInsertElectroniccaseUp" parameterType="String">
+     merge into KTDOC_ELECTRONICCASE_UP   k  using dual  on(
+     (select count(*) from KTDOC_ELECTRONICCASE_UP
+     where
+     ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+     and NO=#{NO,jdbcType=VARCHAR}
+     and CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR}) > 0)
+ when matched then
+      update set
+            k.CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR},
+      		k.NO=#{NO,jdbcType=VARCHAR},
+      		k.DEPT_CODE=#{DEPT_CODE,jdbcType=VARCHAR},
+      		k.REGISTER_ID=#{REGISTER_ID,jdbcType=VARCHAR},
+      		k.EMP_ID=#{EMP_ID,jdbcType=VARCHAR},
+      		k.PAT_NO=#{PAT_NO,jdbcType=VARCHAR},
+      		k.NAME=#{NAME,jdbcType=VARCHAR},
+      		k.SEX=#{SEX,jdbcType=VARCHAR},
+      		k.BIRTHDAY= to_date(#{BIRTHDAY,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.AGE=#{AGE,jdbcType=VARCHAR},
+      		k.AGE2=#{AGE2,jdbcType=VARCHAR},
+      		k.CF_TYPE=#{CF_TYPE,jdbcType=VARCHAR},
+      		k.IDCARD=#{IDCARD,jdbcType=VARCHAR},
+      		k.CLINIC_TIME= to_date(#{CLINIC_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.IF_FIRSTVISIT=#{IF_FIRSTVISIT,jdbcType=VARCHAR},
+      		k.ALLERGIC_HISTORY=#{ALLERGIC_HISTORY,jdbcType=VARCHAR},
+      		k.CHIEF_COMPLAINT=#{CHIEF_COMPLAINT,jdbcType=VARCHAR},
+      		k.HPC=#{HPC,jdbcType=VARCHAR},
+      		k.PMH=#{PMH,jdbcType=VARCHAR},
+      		k.PHYSIQUE=#{PHYSIQUE,jdbcType=VARCHAR},
+      		k.CLINIC_DISPOSE=#{CLINIC_DISPOSE,jdbcType=VARCHAR},
+      		k.DIAGNOSE_NAME=#{DIAGNOSE_NAME,jdbcType=VARCHAR},
+      		k.DIAGNOSE_MEASUR=#{DIAGNOSE_MEASUR,jdbcType=VARCHAR},
+      		k.KTDOC_REMARK=#{KTDOC_REMARK,jdbcType=VARCHAR},
+      		k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR},
+      		k.UPLOAD_TIME= to_date(#{UPLOAD_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.CARDID=#{CARDID,jdbcType=VARCHAR},
+      		k.PERSONID=#{PERSONID,jdbcType=VARCHAR},
+      		k.CARDNUM=#{CARDNUM,jdbcType=VARCHAR},
+      		k.CREATE_TIME= to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.COMPANY=#{COMPANY,jdbcType=VARCHAR}
+      		where k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+      		and k.NO=#{NO,jdbcType=VARCHAR}
+      		and k.CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR}
+    when not matched then
+   INSERT(
+   CLINIC_ID,
+   NO,
+   DEPT_CODE,
+   REGISTER_ID,
+   EMP_ID,
+   PAT_NO,
+   NAME,
+   SEX,
+   BIRTHDAY,
+   AGE,
+   AGE2,
+   CF_TYPE,
+   IDCARD,
+   CLINIC_TIME,
+   IF_FIRSTVISIT,
+   ALLERGIC_HISTORY,
+   CHIEF_COMPLAINT,
+   HPC,
+   PMH,
+   PHYSIQUE,
+   CLINIC_DISPOSE,
+   DIAGNOSE_NAME,
+   DIAGNOSE_MEASUR,
+   KTDOC_REMARK,
+   ORG_CODE,
+   UPLOAD_TIME,
+   CARDID,
+   PERSONID,
+   CARDNUM,
+   CREATE_TIME,
+   COMPANY
+)
+		VALUES(
+		#{CLINIC_ID,jdbcType=VARCHAR},
+		#{NO,jdbcType=VARCHAR},
+		#{DEPT_CODE,jdbcType=VARCHAR},
+		#{REGISTER_ID,jdbcType=VARCHAR},
+		#{EMP_ID,jdbcType=VARCHAR},
+		#{PAT_NO,jdbcType=VARCHAR},
+		#{NAME,jdbcType=VARCHAR},
+		#{SEX,jdbcType=VARCHAR},
+		to_date(#{BIRTHDAY,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{AGE,jdbcType=VARCHAR},
+		#{AGE2,jdbcType=VARCHAR},
+		#{CF_TYPE,jdbcType=VARCHAR},
+		#{IDCARD,jdbcType=VARCHAR},
+		to_date(#{CLINIC_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{IF_FIRSTVISIT,jdbcType=VARCHAR},
+		#{ALLERGIC_HISTORY,jdbcType=VARCHAR},
+		#{CHIEF_COMPLAINT,jdbcType=VARCHAR},
+		#{HPC,jdbcType=VARCHAR},
+		#{PMH,jdbcType=VARCHAR},
+		#{PHYSIQUE,jdbcType=VARCHAR},
+		#{CLINIC_DISPOSE,jdbcType=VARCHAR},
+		#{DIAGNOSE_NAME,jdbcType=VARCHAR},
+		#{DIAGNOSE_MEASUR,jdbcType=VARCHAR},
+		#{KTDOC_REMARK,jdbcType=VARCHAR},
+		#{ORG_CODE,jdbcType=VARCHAR},
+		to_date(#{UPLOAD_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{CARDID,jdbcType=VARCHAR},
+		#{PERSONID,jdbcType=VARCHAR},
+		#{CARDNUM,jdbcType=VARCHAR},
+		to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{COMPANY,jdbcType=VARCHAR}
+		)
+    </update>
+</mapper>

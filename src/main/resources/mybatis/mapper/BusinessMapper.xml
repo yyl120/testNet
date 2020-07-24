@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.testmybatis.insert.dao.BusinessDao">
+    <select id="selectAllBusiness" resultMap="business">
+        select * from KTTRAN_BUSINESS
+    </select>
+
+    <select id="selectBusiness" resultMap="business">
+        select * from KTTRAN_BUSINESS where group_id=#{GroupId}
+    </select>
+<resultMap id="business" type="com.example.testmybatis.insert.domain.KttranBusiness">
+    <id column="BS_CODE" property="BsCode" ></id>
+    <result column="BS_NAME" property="BsName"></result>
+    <result column="BS_COMMENTS" property="BsComments"></result>
+    <result column="SVR_CODE" property="SVRCODE"></result>
+    <result column="BS_PARENT_CODE" property="BsParentCode"></result>
+    <result column="BS_ORDER" property="BsOrder"></result>
+    <result column="USE_STATUS" property="UseStatus"></result>
+    <result column="BS_MEMO" property="BsMemo"></result>
+    <result column="BS_REPSQL" property="BsRepsql"></result>
+    <result column="BS_RSPSQL" property="BsRspsql"></result>
+    <result column="BS_TABLE" property="BsTable"></result>
+    <result column="BS_STATUS_SAVETABEL" property="BsStatusSaveTable"></result>
+    <result column="BS_STATUS_SCHTABLE" property="BsStatusSchTable"></result>
+    <result column="BS_STATUS_SAVESQL" property="BsStatusSaveSql"></result>
+    <result column="BS_STATUS_SCHSQL" property="BsStatusSchSql"></result>
+    <result column="BS_STATUS_PROC" property="BsStatusProc"></result>
+    <result column="BS_COUNT_TYPE" property="BsCountType"></result>
+    <result column="BS_SIMPLE_PARAM" property="BsSimpleParam"></result>
+    <result column="BS_OUT_XML" property="BsOutXml"></result>
+    <result column="BS_CHECK_VALID" property="BsCheckValid"></result>
+    <result column="BS_MANDATORY" property="BsMandatory"></result>
+    <result column="BS_STRUCT" property="BsStruct"></result>
+    <result column="DIANA_COUNT" property="DianaCount"></result>
+    <result column="CLOSE_TRANSACTION" property="Transaction"></result>
+    <result column="BS_ISSUED_FLAG" property="DownFlag"></result>
+    <result column="GROUP_ID" property="GroupId"></result>
+    <result column="SERIAL" property="SerialString"></result>
+
+    <result column="BS_ISRECORD" property="BsIsRecord"></result>
+    <result column="BS_RESPONSE_HEAD" property="BsResponseHead"></result>
+
+</resultMap>
+
+    <select id="selectBusinessField" resultMap="businessField">
+        select * from KTTRAN_BUSSINESS_FIELD where group_id=#{fGroupId}
+    </select>
+    <resultMap id="businessField" type="com.example.testmybatis.insert.domain.KttranBussinessField">
+        <id column="BS_CODE" property="fBsCode" ></id>
+        <result column="BSF_CODE" property="fBsfCode"></result>
+        <result column="BSF_NAME" property="fBsfName"></result>
+        <result column="BS_COMMENTS" property="fBsfComments"></result>
+        <result column="BSF_COLUMN" property="fBsfColumn"></result>
+        <result column="BSF_TYPE" property="fBsfType"></result>
+        <result column="BSF_LENGTH" property="fBsfLength"></result>
+        <result column="BSF_PRECISION" property="fBsfPrecision"></result>
+        <result column="BSF_SCALE" property="fBsfScale"></result>
+        <result column="BSF_DEFAULT" property="fBsfDefault"></result>
+        <result column="BSF_MANDATORY" property="fBsfMandatory"></result>
+        <result column="BSF_PK" property="fBsfPk"></result>
+        <result column="BSF_XML" property="fBsfXml"></result>
+        <result column="BSF_ATTACH" property="fBsfAttach"></result>
+        <result column="BSF_ORD" property="fBsfOrd"></result>
+        <result column="BSF_OPTYPE" property="fBsfOptype"></result>
+        <result column="BSF_DIRECTION" property="fBsfDirection"></result>
+        <result column="BSF_ISPRERUNSQL" property="fIsPreRunSql"></result>
+        <result column="BSF_LMTRANG" property="fBsfLmtRang"></result>
+        <result column="BSF_DICTIONARY" property="fBsfDictionary"></result>
+        <result column="BSF_ENCRYPT" property="fBsfEncrypt"></result>
+        <result column="GROUP_ID" property="fGroupId"></result>
+        <result column="BSF_CURSORTYPE" property="fBsfCursorType"></result>
+        <result column="BSF_ISRECORD" property="fBsfIsRecord"></result>
+
+
+
+    </resultMap>
+
+    <select id="selectBusinessFieldLmtRang" resultMap="BusinessFieldLmtRang">
+        select * from KTTRAN_BUSSINESS_FIELD_LMTRANG where group_id=#{fGroupId}
+    </select>
+    <resultMap id="BusinessFieldLmtRang" type="com.example.testmybatis.insert.domain.KttranBussinessFieldLmtRang">
+        <id column="BS_CODE" property="fBsCode" ></id>
+        <result column="BSF_CODE" property="fBsfCode"></result>
+        <result column="BSFV_SN" property="fBsfvSn"></result>
+        <result column="BSFV_LMT" property="fBsfvLmt"></result>
+        <result column="BSFV_COUNT" property="fBsfvCount"></result>
+        <result column="BSFV_ACTIVE" property="fBsfvActive"></result>
+        <result column="BSFV_ERR" property="fBsfvErr"></result>
+        <result column="GROUP_ID" property="fGroupId"></result>
+    </resultMap>
+
+    <select id="selectBussinessFieldValue" resultMap="BussinessFieldValue">
+        select * from KTTRAN_BUSSINESS_FIELD_VALUE where group_id=#{fGroupId}
+    </select>
+    <resultMap id="BussinessFieldValue" type="com.example.testmybatis.insert.domain.KttranBussinessFieldValue">
+        <id column="BS_CODE" property="fBsCode" ></id>
+        <result column="BSF_CODE" property="fBsfCode"></result>
+        <result column="BSFV_SN" property="fBsfvSn"></result>
+        <result column="BSFV_METHOD" property="fBsfvMethod"></result>
+        <result column="BSFV_COUNT" property="fBsfvCount"></result>
+        <result column="BSFV_ACTIVE" property="fBsfvActive"></result>
+        <result column="GROUP_ID" property="fGroupId"></result>
+    </resultMap>
+
+    <select id="kbx" resultMap="kbxx">
+        select * from KTTRAN_BUSSINESS_FIELD_VALUE
+    </select>
+    <resultMap id="kbxx" type="com.example.testmybatis.insert.domain.KttranBussinessFieldValue">
+        <id column="BS_CODE" property="fBsCode" ></id>
+        <result column="BSF_CODE" property="fBsfCode"></result>
+        <result column="BSFV_SN" property="fBsfvSn"></result>
+        <result column="BSFV_METHOD" property="fBsfvMethod"></result>
+        <result column="BSFV_COUNT" property="fBsfvCount"></result>
+        <result column="BSFV_ACTIVE" property="fBsfvActive"></result>
+        <result column="GROUP_ID" property="fGroupId"></result>
+    </resultMap>
+</mapper>

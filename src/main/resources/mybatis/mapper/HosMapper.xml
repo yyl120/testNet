@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.testmybatis.insert.dao.InforDao">
+	<select id="limitPROVINCE" parameterType="String" resultType="String">
+   SELECT RGN_CODE FROM KTSYS_REGIONAL WHERE RGN_CODE=#PROVINCE#
+	</select>
+
+
+
+	<select id="getFunction" parameterType="String" resultType="string">
+　　select CSB_CD.getpersonid_soo1_4(#{PERSONID,jdbcType=VARCHAR},#{HEALTH_ID,jdbcType=VARCHAR},
+     #{ORG_CODE,jdbcType=VARCHAR},#{IDCARD,jdbcType=VARCHAR},#{CARDNUM,jdbcType=VARCHAR},
+     #{CARDID,jdbcType=VARCHAR},#{NAME,jdbcType=VARCHAR}) from dual
+</select>
+    <update id="PERSON_INFOR" parameterType="String">
+     merge into KTBASE_PERSON k  using dual  on
+((select count(*) from KTBASE_PERSON where PERSONID=#{PERSONID,jdbcType=VARCHAR}) > 0)
+ when matched then
+      update set
+            k.PERSONID=#{PERSONID,jdbcType=VARCHAR},
+      		k.HEALTH_ID=#{HEALTH_ID,jdbcType=VARCHAR},
+      		k.PROVINCE=#{PROVINCE,jdbcType=VARCHAR},
+      		k.COUNTYCODE=#{COUNTYCODE,jdbcType=VARCHAR},
+      		k.TOWN=#{TOWN,jdbcType=VARCHAR},
+      		k.COMMUNITY=#{COMMUNITY,jdbcType=VARCHAR},
+      		k.NAME=#{NAME,jdbcType=VARCHAR},
+      		k.SEX=#{SEX,jdbcType=VARCHAR},
+      		k.BIRTHDAY=to_date(#{BIRTHDAY,jdbcType=DATE},'yyyy-mm-dd'),
+      		k.CF_TYPE=#{CF_TYPE,jdbcType=VARCHAR},
+      		k.IDCARD=#{IDCARD,jdbcType=VARCHAR},
+      		k.BLOOD=#{BLOOD,jdbcType=VARCHAR},
+      		k.MARRIED=#{MARRIED,jdbcType=VARCHAR},
+      		k.EMAIL=#{EMAIL,jdbcType=VARCHAR},
+      		k.RESIDE=#{EMAIL,jdbcType=VARCHAR},
+      		k.HOME_ADDRESS=#{HOME_ADDRESS,jdbcType=VARCHAR},
+      		k.HOME_PHONE=#{HOME_PHONE,jdbcType=VARCHAR},
+      		k.HOME_ZIPCODE=#{HOME_PHONE,jdbcType=VARCHAR},
+      		k.COMPANY=#{COMPANY,jdbcType=VARCHAR},
+      		k.COMPANY_ADDRESS=#{COMPANY_ADDRESS,jdbcType=VARCHAR},
+      		k.COMPANY_ZIPCODE=#{COMPANY_ZIPCODE,jdbcType=VARCHAR},
+      		k.OCCUPATION=#{OCCUPATION,jdbcType=VARCHAR},
+      		k.COMPANY_PHONE=#{COMPANY_PHONE,jdbcType=VARCHAR},
+      		k.MOBILE=#{MOBILE,jdbcType=VARCHAR},
+      		k.EXIGENCE_NAME=#{EXIGENCE_NAME,jdbcType=VARCHAR},
+      		k.EXIGENCE_PHONE=#{EXIGENCE_PHONE,jdbcType=VARCHAR},
+      		k.CREATE_TIME=to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.MODIFY_TIME=to_date(#{MODIFY_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		    k.DELETE_FLAG=#{DELETE_FLAG,jdbcType=DOUBLE},
+      		k.REPORT_TIME=to_date(#{REPORT_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR},
+      		k.MODIFY_ORG_CODE=#{MODIFY_ORG_CODE,jdbcType=VARCHAR},
+      		k.DETAIL=#{DETAIL,jdbcType=VARCHAR},
+      		k.RH_TYPE=#{RH_TYPE,jdbcType=VARCHAR},
+      		k.CITY=#{CITY,jdbcType=VARCHAR},
+      		k.UPDATE_FLAG=#{UPDATE_FLAG,jdbcType=DOUBLE},
+      		k.CARDNUM=#{CARDNUM,jdbcType=VARCHAR},
+      		k.CARDID=#{CARDID,jdbcType=VARCHAR}
+      		where k.PERSONID=#{PERSONID,jdbcType=VARCHAR}
+    when not matched then
+   INSERT(PERSONID,
+		HEALTH_ID,
+        PROVINCE,
+        COUNTYCODE,
+        TOWN,
+        COMMUNITY,
+        NAME,
+        SEX,
+        BIRTHDAY,
+        CF_TYPE,
+        IDCARD,
+        BLOOD,
+        MARRIED,
+        EMAIL,
+        RESIDE,
+        HOME_ADDRESS,
+        HOME_PHONE,
+		HOME_ZIPCODE,
+        COMPANY,
+        COMPANY_ADDRESS,
+        COMPANY_ZIPCODE,
+        OCCUPATION,
+        COMPANY_PHONE,
+        MOBILE,
+        EXIGENCE_NAME,
+        EXIGENCE_PHONE,
+		CREATE_TIME,
+		MODIFY_TIME,
+		DELETE_FLAG,
+		REPORT_TIME,
+		ORG_CODE,
+		MODIFY_ORG_CODE,
+		DETAIL,
+		RH_TYPE,
+		CITY,
+		UPDATE_FLAG,
+		CARDNUM,
+		CARDID)
+		VALUES
+		(#{PERSONID,jdbcType=VARCHAR},
+		#{HEALTH_ID,jdbcType=VARCHAR},
+		#{PROVINCE,jdbcType=VARCHAR},
+		#{COUNTYCODE,jdbcType=VARCHAR},
+		#{TOWN,jdbcType=VARCHAR},
+		#{COMMUNITY,jdbcType=VARCHAR},
+		#{NAME,jdbcType=VARCHAR},
+		#{SEX,jdbcType=VARCHAR},
+		to_date(#{BIRTHDAY,jdbcType=DATE},'yyyy-mm-dd'),
+		#{CF_TYPE,jdbcType=VARCHAR},
+		#{IDCARD,jdbcType=VARCHAR},
+		#{BLOOD,jdbcType=VARCHAR},
+		#{MARRIED,jdbcType=VARCHAR},
+		#{EMAIL,jdbcType=VARCHAR},
+		#{RESIDE,jdbcType=VARCHAR},
+		#{HOME_ADDRESS,jdbcType=VARCHAR},
+		#{HOME_PHONE,jdbcType=VARCHAR},
+		#{HOME_ZIPCODE,jdbcType=VARCHAR},
+		#{COMPANY,jdbcType=VARCHAR},
+		#{COMPANY_ADDRESS,jdbcType=VARCHAR},
+		#{COMPANY_ZIPCODE,jdbcType=VARCHAR},
+		#{OCCUPATION,jdbcType=VARCHAR},
+		#{COMPANY_PHONE,jdbcType=VARCHAR},
+		#{MOBILE,jdbcType=VARCHAR},
+		#{EXIGENCE_NAME,jdbcType=VARCHAR},
+		#{EXIGENCE_PHONE,jdbcType=VARCHAR},
+		to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		to_date(#{MODIFY_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{DELETE_FLAG,jdbcType=DOUBLE},
+		to_date(#{REPORT_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{ORG_CODE,jdbcType=VARCHAR},
+		#{MODIFY_ORG_CODE,jdbcType=VARCHAR},
+		#{DETAIL,jdbcType=VARCHAR},
+		#{RH_TYPE,jdbcType=VARCHAR},
+		#{CITY,jdbcType=VARCHAR},
+		#{UPDATE_FLAG,jdbcType=DOUBLE},
+		#{CARDNUM,jdbcType=VARCHAR},
+		#{CARDID,jdbcType=VARCHAR})
+    </update>
+
+
+	<update id="KTHRA_ALLERGY_NEW" parameterType="String">
+     merge into KTHRA_ALLERGY_NEW  k  using dual  on
+((select count(*) from KTBASE_PERSON
+where
+ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+and SICK_ID=#{SICK_ID,jdbcType=DOUBLE}
+and AI_SN=#{AI_SN,jdbcType=DOUBLE}) > 0)
+ when matched then
+      update set
+            k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR},
+      		k.SICK_ID=#{SICK_ID,jdbcType=DOUBLE},
+      		k.AI_SN=#{AI_SN,jdbcType=DOUBLE},
+      		k.PERSONID=#{PERSONID,jdbcType=VARCHAR},
+      		k.HEALTH_ID=#{HEALTH_ID,jdbcType=VARCHAR},
+      		k.AI_TYPE=#{AI_TYPE,jdbcType=VARCHAR},
+      		k.ITEM=#{ITEM,jdbcType=VARCHAR},
+      		k.START_DATE=to_date(#{START_DATE,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.SOURCE_NO=#{SOURCE_NO,jdbcType=VARCHAR},
+      		k.CREATE_ORG_CODE=#{CREATE_ORG_CODE,jdbcType=VARCHAR},
+      		k.CREATE_EMP_ID=#{CREATE_EMP_ID,jdbcType=DOUBLE},
+      		k.CREATE_TIME=to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+      		k.REMARK=#{REMARK,jdbcType=VARCHAR}
+      		where
+      		 k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+            and  k.SICK_ID=#{SICK_ID,jdbcType=DOUBLE}
+            and  k.AI_SN=#{AI_SN,jdbcType=DOUBLE}
+    when not matched then
+   INSERT(
+   ORG_CODE,
+   SICK_ID,
+   AI_SN,
+   PERSONID,
+   HEALTH_ID,
+   AI_TYPE,
+   ITEM,
+   REASON,
+   START_DATE,
+   SOURCE_NO,
+   CREATE_ORG_CODE,
+   CREATE_EMP_ID,
+   CREATE_TIME,
+   REMARK)
+		VALUES
+		(#{ORG_CODE,jdbcType=DOUBLE},
+		#{SICK_ID,jdbcType=DOUBLE},
+		#{AI_SN,jdbcType=VARCHAR},
+		#{PERSONID,jdbcType=VARCHAR},
+		#{HEALTH_ID,jdbcType=VARCHAR},
+		#{AI_TYPE,jdbcType=VARCHAR},
+		#{ITEM,jdbcType=VARCHAR},
+		#{REASON,jdbcType=VARCHAR},
+		to_date(#{START_DATE,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{SOURCE_NO,jdbcType=VARCHAR},
+		#{CREATE_ORG_CODE,jdbcType=VARCHAR},
+		#{CREATE_EMP_ID,jdbcType=DOUBLE},
+		to_date(#{CREATE_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{REMARK,jdbcType=DOUBLE}
+
+)
+    </update>
+
+	<delete id="deleteKtdocDiagnose" parameterType="String">
+		 delete from KTDOC_DIAGNOSE where ORG_CODE = #{ORG_CODE} and CLINIC_ID = #{CLINIC_ID}
+	</delete>
+
+	<delete id="deleteKtdocWorkLog" parameterType="String">
+		 delete from KTDOC_WORK_LOG  where ORG_CODE = #{ORG_CODE} and CLINIC_ID =#{CLINIC_ID}
+	</delete>
+
+	<insert id="insertKtdocWorkLog" parameterType="String">
+		INSERT INTO KTDOC_WORK_LOG(
+		ORG_CODE,
+		CLINIC_ID,
+		REGISTER_ID,
+		EMP_ID,
+		DEPT_ID,
+		CLINIC_TIME,
+		SICKEN_TIME,
+		PERSONID,
+		TYPE,
+		DIAGNOSE,
+		ICD10,
+		OPERTATION,
+		RESULT,
+		REMARKS,
+		CARDID,
+		CARDNUM,
+		REGISTER_CODE,
+		ZYMOSIS,
+		FLU,
+		BRANCH_CODE,
+		PARENTS_NAME,
+		RISK,
+		GREEN_CHANNEL,
+		TRANS,
+		SPILE,
+		CHRONIC,
+		STATE,
+		END_TIME,
+		COMPANY,
+		SICK_ID,
+		START_TIME,
+		SYMPTOM_CODE,
+		DEPT_CODE
+		)
+		values (
+		#{ORG_CODE,jdbcType=VARCHAR},
+		#{CLINIC_ID,jdbcType=VARCHAR},
+		#{REGISTER_ID,jdbcType=VARCHAR},
+		#{EMP_ID,jdbcType=DOUBLE},
+		#{DEPT_ID,jdbcType=DOUBLE},
+		to_date(#{CLINIC_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		to_date(#{SICKEN_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{PERSONID,jdbcType=VARCHAR},
+		#{TYPE,jdbcType=VARCHAR},
+		#{DIAGNOSE,jdbcType=VARCHAR},
+		#{ICD10,jdbcType=VARCHAR},
+		#{OPERTATION,jdbcType=VARCHAR},
+		#{RESULT,jdbcType=VARCHAR},
+		#{REMARKS,jdbcType=VARCHAR},
+		#{CARDID,jdbcType=VARCHAR},
+		#{CARDNUM,jdbcType=VARCHAR},
+		#{REGISTER_CODE,jdbcType=VARCHAR},
+		#{ZYMOSIS,jdbcType=VARCHAR},
+		#{FLU,jdbcType=VARCHAR},
+		#{BRANCH_CODE,jdbcType=VARCHAR},
+		#{PARENTS_NAME,jdbcType=VARCHAR},
+		#{RISK,jdbcType=VARCHAR},
+		#{GREEN_CHANNEL,jdbcType=VARCHAR},
+		#{TRANS,jdbcType=VARCHAR},
+		#{SPILE,jdbcType=VARCHAR},
+		#{CHRONIC,jdbcType=VARCHAR},
+		#{STATE,jdbcType=VARCHAR},
+		to_date(#{END_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{COMPANY,jdbcType=VARCHAR},
+		#{SICK_ID,jdbcType=VARCHAR},
+		to_date(#{START_TIME,jdbcType=DATE},'yyyy-MM-dd hh24:mi:ss'),
+		#{SYMPTOM_CODE,jdbcType=VARCHAR},
+		#{DEPT_CODE,jdbcType=VARCHAR}
+		)
+	</insert>
+
+<update id="updateKtdocDiagnse" parameterType="String">
+	merge into KTDOC_DIAGNOSE   k  using dual  on
+	((select count(*) from KTDOC_DIAGNOSE
+	where
+	ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+	and CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR}
+	and NO =#{NO,jdbcType=DOUBLE}) > 0)
+	when matched then
+	update set
+	k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR},
+	k.CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR},
+	k.NO=#{NO,jdbcType=DOUBLE},
+	k.ICD=#{ICD,jdbcType=VARCHAR},
+	k.DISEASE_NAME=#{DISEASE_NAME,jdbcType=VARCHAR},
+	k.REMARKS=#{REMARKS,jdbcType=VARCHAR},
+	k.EMP_ID=#{EMP_ID,jdbcType=DOUBLE}
+	where
+	k.ORG_CODE=#{ORG_CODE,jdbcType=VARCHAR}
+	and  k.CLINIC_ID=#{CLINIC_ID,jdbcType=VARCHAR}
+	and  k.NO=#{NO,jdbcType=DOUBLE}
+	when not matched then
+	INSERT(
+	ORG_CODE,
+	CLINIC_ID,
+	NO,
+	ICD,
+	DISEASE_NAME,
+	REMARKS,
+	EMP_ID)
+	VALUES
+	(#{ORG_CODE,jdbcType=VARCHAR},
+	#{CLINIC_ID,jdbcType=VARCHAR},
+	#{NO,jdbcType=DOUBLE},
+	#{ICD,jdbcType=VARCHAR},
+	#{DISEASE_NAME,jdbcType=VARCHAR},
+	#{REMARKS,jdbcType=VARCHAR},
+	#{EMP_ID,jdbcType=DOUBLE}
+	)
+</update>
+
+</mapper>

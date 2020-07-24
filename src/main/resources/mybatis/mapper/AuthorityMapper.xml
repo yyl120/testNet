@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.testmybatis.insert.dao.AuthorityDao">
+    <select id="selectAuthority" resultMap="authority">
+       select * from KTTRAN_AUTHORITY where group_id=#{fGroupId}
+    </select>
+    <resultMap id="authority" type="com.example.testmybatis.insert.domain.KttranAuthority">
+        <id column="UR_ID" property="fUrId" ></id>
+        <result column="SVR_CODE" property="fSvrCode"></result>
+        <result column="AUTH" property="fAuth"></result>
+        <result column="IS_LOG" property="fIsLog"></result>
+        <result column="GROUP_ID" property="fGroupId"></result>
+
+    </resultMap>
+</mapper>
